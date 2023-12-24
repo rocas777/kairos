@@ -1,35 +1,40 @@
 package integration
 
-type simpson_3_8 struct {
-	n      uint
+type Simpson_3_8 struct {
+	N      uint
 	cycles uint
-	f      func(x float64) float64
 }
 
-func (s *simpson_3_8) Cycles() uint {
+func NewSimpson_3_8(n uint) *Simpson_3_8 {
+	return &Simpson_3_8{N: n * 3}
+}
+
+func (s *Simpson_3_8) Cycles() uint {
 	return s.cycles
 }
 
-func NewSimpson_3_8(N uint, f func(x float64) float64) *simpson_3_8 {
-	return &simpson_3_8{N * 3, 0, f}
-}
+func (s *Simpson_3_8) DefiniteIntegral(f func(x float64) float64, a, b float64) float64 {
+	s.handleInput()
 
-func DefaultSimpson_3_8(f func(x float64) float64) *simpson_3_8 {
-	return NewSimpson_3_8(9, f)
-}
-
-func (s *simpson_3_8) DefiniteIntegral(a, b float64) float64 {
 	s.cycles = 0
-	h := (b - a) / float64(s.n)
-	partial_out := s.f(a) + s.f(b)
-	for i := 1; i < int(s.n/3+1); i++ {
-		partial_out += 3 * s.f(a+float64(3*i-2)*h)
-		partial_out += 3 * s.f(a+float64(3*i-1)*h)
+	h := (b - a) / float64(s.N)
+	partialOut := f(a) + f(b)
+	for i := 1; i < int(s.N/3+1); i++ {
+		partialOut += 3 * f(a+float64(3*i-2)*h)
+		partialOut += 3 * f(a+float64(3*i-1)*h)
 		s.cycles++
 	}
-	for i := 1; i < int(s.n/3); i++ {
-		partial_out += 2 * s.f(a+float64(3*i)*h)
+	for i := 1; i < int(s.N/3); i++ {
+		partialOut += 2 * f(a+float64(3*i)*h)
 		s.cycles++
 	}
-	return partial_out * h * 3 / 8
+	return partialOut * h * 3 / 8
+}
+
+func (s *Simpson_3_8) handleInput() {
+	if s.N == 0 {
+		s.N = 3
+	} else if s.N < 3 {
+		panic("Simpson_3_8 struct value of N should be higher that 0")
+	}
 }

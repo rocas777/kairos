@@ -2,37 +2,40 @@ package integration
 
 import "math"
 
-type simpsonAdaptive struct {
-	epsilon float64
-	simpson *simpson_1_3
+type SimpsonAdaptive struct {
+	Epsilon float64
+	simpson *Simpson_1_3
 	cycles  uint
-	f       func(x float64) float64
 }
 
-func NewSimpson_adaptive(epsilon float64, f func(x float64) float64) *simpsonAdaptive {
-	return &simpsonAdaptive{epsilon, NewSimpson_1_3(1, f), 0, f}
+func NewSimpsonAdaptive(epsilon float64) *SimpsonAdaptive {
+	return &SimpsonAdaptive{Epsilon: epsilon}
 }
 
-func DefaultSimpsonAdaptive(f func(x float64) float64) *simpsonAdaptive {
-	return NewSimpson_adaptive(0.10, f)
-}
-
-func (s *simpsonAdaptive) DefiniteIntegral(a, b float64) float64 {
-	s.cycles = 0
-	return s._recursiveSimpson(a, b)
-}
-
-func (s *simpsonAdaptive) _recursiveSimpson(a, b float64) float64 {
-	s_a_m := s.simpson.DefiniteIntegral(a, (b+a)/2.0)
-	s_m_b := s.simpson.DefiniteIntegral((b+a)/2.0, b)
-	s_a_b := s.simpson.DefiniteIntegral(a, b)
+func (s *SimpsonAdaptive) DefiniteIntegral(f func(x float64) float64, a, b float64) float64 {
+	s.handleInput()
+	
+	s_a_m := s.simpson.DefiniteIntegral(f, a, (b+a)/2.0)
+	s_m_b := s.simpson.DefiniteIntegral(f, (b+a)/2.0, b)
+	s_a_b := s.simpson.DefiniteIntegral(f, a, b)
 	s.cycles++
-	if math.Abs(s_a_m+s_m_b-s_a_b) < 15*s.epsilon {
+	if math.Abs(s_a_m+s_m_b-s_a_b) < 15*s.Epsilon {
 		return s_a_m + s_m_b
 	}
-	return s._recursiveSimpson(a, (b+a)/2.0) + s._recursiveSimpson((b+a)/2.0, b)
+	return s.DefiniteIntegral(f, a, (b+a)/2.0) + s.DefiniteIntegral(f, (b+a)/2.0, b)
 }
 
-func (s *simpsonAdaptive) Cycles() uint {
+func (s *SimpsonAdaptive) Cycles() uint {
 	return s.cycles
+}
+
+func (s *SimpsonAdaptive) handleInput() {
+	if s.Epsilon == 0 {
+		s.Epsilon = 0.1
+	} else if s.Epsilon < 0 {
+		panic("SimpsonAdaptive struct value of Epsilon should be higher that 0")
+	}
+	if s.simpson == nil {
+		s.simpson = &Simpson_1_3{}
+	}
 }
