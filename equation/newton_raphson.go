@@ -2,32 +2,41 @@ package equation
 
 import "math"
 
-type newtonRaphson struct {
-	epsilon    float64
+type NewtonRaphson struct {
+	Epsilon    float64
 	cycles     uint
-	cycleLimit uint
-	f          func(x float64) float64
+	CycleLimit uint
 }
 
-func (s *newtonRaphson) Cycles() uint {
+func NewNewtonRaphson(epsilon float64, cycleLimit uint) *NewtonRaphson {
+	return &NewtonRaphson{Epsilon: epsilon, CycleLimit: cycleLimit}
+}
+
+func (s *NewtonRaphson) Cycles() uint {
 	return s.cycles
 }
 
-func NewNewtonRaphson(epsilon float64, cycleLimit uint, f func(x float64) float64) *newtonRaphson {
-	return &newtonRaphson{epsilon, 0, cycleLimit, f}
-}
-
-func DefaultNewtonRaphson(f func(x float64) float64) *newtonRaphson {
-	return NewNewtonRaphson(0.001, 100, f)
-}
-
-func (s *newtonRaphson) Result(f1 func(x float64) float64, a float64) float64 {
+func (s *NewtonRaphson) Result(f func(x float64) float64, dxF func(x float64) float64, a float64) float64 {
+	s.handleInput()
 	x := a
-	for s.cycles = 0; s.cycles < s.cycleLimit; s.cycles++ {
-		if s.f(x) < s.epsilon {
+	for s.cycles = 0; s.cycles < s.CycleLimit; s.cycles++ {
+		if f(x) < s.Epsilon {
 			return x
 		}
-		x = x - s.f(x)/f1(x)
+		x = x - f(x)/dxF(x)
 	}
 	return math.NaN()
+}
+
+func (s *NewtonRaphson) handleInput() {
+	if s.CycleLimit == 0 {
+		s.CycleLimit = 1
+	} else if s.CycleLimit < 0 {
+		panic("NewtonRaphson struct value of CycleLimit should be higher that 0")
+	}
+	if s.Epsilon == 0 {
+		s.Epsilon = 0.01
+	} else if s.Epsilon < 0 {
+		panic("NewtonRaphson struct value of Epsilon should be higher that 0")
+	}
 }
