@@ -1,8 +1,8 @@
 package integration_test
 
 import (
+	"github.com/rocas777/kairos/integration"
 	"math"
-	"numericalgo/pkg/integration"
 	"testing"
 )
 

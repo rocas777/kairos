@@ -1,8 +1,8 @@
 package equation_test
 
 import (
+	"github.com/rocas777/kairos/equation"
 	"math"
-	"numericalgo/pkg/equation"
 	"testing"
 )
 

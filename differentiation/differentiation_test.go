@@ -1,8 +1,8 @@
 package differentiation_test
 
 import (
+	"github.com/rocas777/kairos/differentiation"
 	"math"
-	"numericalgo/pkg/differentiation"
 	"testing"
 )
 
