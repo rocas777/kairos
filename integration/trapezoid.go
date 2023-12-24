@@ -18,7 +18,7 @@ func DefaultTrapezoid(f func(x float64) float64) *trapezoid {
 	return NewTrapezoid(10, f)
 }
 
-func (t *trapezoid) DefinedIntegral(a, b float64) float64 {
+func (t *trapezoid) DefiniteIntegral(a, b float64) float64 {
 	t.cycles = 0
 	h := (b - a) / float64(t.N)
 	out := 0.0

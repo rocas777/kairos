@@ -17,15 +17,15 @@ func DefaultSimpsonAdaptive(f func(x float64) float64) *simpsonAdaptive {
 	return NewSimpson_adaptive(0.10, f)
 }
 
-func (s *simpsonAdaptive) DefinedIntegral(a, b float64) float64 {
+func (s *simpsonAdaptive) DefiniteIntegral(a, b float64) float64 {
 	s.cycles = 0
 	return s._recursiveSimpson(a, b)
 }
 
 func (s *simpsonAdaptive) _recursiveSimpson(a, b float64) float64 {
-	s_a_m := s.simpson.DefinedIntegral(a, (b+a)/2.0)
-	s_m_b := s.simpson.DefinedIntegral((b+a)/2.0, b)
-	s_a_b := s.simpson.DefinedIntegral(a, b)
+	s_a_m := s.simpson.DefiniteIntegral(a, (b+a)/2.0)
+	s_m_b := s.simpson.DefiniteIntegral((b+a)/2.0, b)
+	s_a_b := s.simpson.DefiniteIntegral(a, b)
 	s.cycles++
 	if math.Abs(s_a_m+s_m_b-s_a_b) < 15*s.epsilon {
 		return s_a_m + s_m_b

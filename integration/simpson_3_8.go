@@ -18,7 +18,7 @@ func DefaultSimpson_3_8(f func(x float64) float64) *simpson_3_8 {
 	return NewSimpson_3_8(9, f)
 }
 
-func (s *simpson_3_8) DefinedIntegral(a, b float64) float64 {
+func (s *simpson_3_8) DefiniteIntegral(a, b float64) float64 {
 	s.cycles = 0
 	h := (b - a) / float64(s.n)
 	partial_out := s.f(a) + s.f(b)

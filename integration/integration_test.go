@@ -71,7 +71,7 @@ func TestTrapezoid(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			m := integration.NewTrapezoid(10, test.f)
-			check(m.DefinedIntegral(test.a, test.b), test.sol(), t)
+			check(m.DefiniteIntegral(test.a, test.b), test.sol(), t)
 		})
 	}
 }
@@ -95,7 +95,7 @@ func TestSimpson_1_3(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			m := integration.NewSimpson_1_3(10, test.f)
-			check((m.DefinedIntegral(test.a, test.b)), test.sol(), t)
+			check((m.DefiniteIntegral(test.a, test.b)), test.sol(), t)
 		})
 	}
 }
@@ -119,7 +119,7 @@ func TestSimpson_3_8(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			m := integration.NewSimpson_3_8(10, test.f)
-			check((m.DefinedIntegral(test.a, test.b)), test.sol(), t)
+			check((m.DefiniteIntegral(test.a, test.b)), test.sol(), t)
 		})
 	}
 }
@@ -144,7 +144,7 @@ func TestSimpson_adaptive(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			m := integration.NewSimpson_adaptive(0.0001, test.f)
-			check((m.DefinedIntegral(test.a, test.b)), test.sol(), t)
+			check((m.DefiniteIntegral(test.a, test.b)), test.sol(), t)
 		})
 	}
 }

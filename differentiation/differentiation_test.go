@@ -75,8 +75,7 @@ func TestSimple(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			m := differentiation.NewSimple(test.h, test.f)
-			check(m.LocalDerivative(test.x), test.dxF(test.x), t)
+			check(differentiation.NewSimple(test.h).LocalDerivative(test.f, test.x), test.dxF(test.x), t)
 		})
 	}
 }
@@ -99,8 +98,8 @@ func TestSymmetric(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			m := differentiation.NewSymmetric(test.h, test.f)
-			check(m.LocalDerivative(test.x), test.dxF(test.x), t)
+			m := differentiation.Symmetric{H: test.h}
+			check(m.LocalDerivative(test.f, test.x), test.dxF(test.x), t)
 		})
 	}
 }
@@ -130,8 +129,8 @@ func TestHigherOrder(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			m := differentiation.NewHigherOrder(test.h, test.f)
-			check(m.LocalDerivative(test.x, test.order), test.dxF(test.x), t)
+			m := differentiation.HigherOrder{H: test.h, Order: test.order}
+			check(m.LocalDerivative(test.f, test.x), test.dxF(test.x), t)
 		})
 	}
 }
