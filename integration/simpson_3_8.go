@@ -1,5 +1,7 @@
 package integration
 
+import "github.com/rocas777/kairos"
+
 type Simpson_3_8 struct {
 	N      uint
 	cycles uint
@@ -29,6 +31,23 @@ func (s *Simpson_3_8) DefiniteIntegral(f func(x float64) float64, a, b float64) 
 		s.cycles++
 	}
 	return partialOut * h * 3 / 8
+}
+
+func (s *Simpson_3_8) AntiDerivative(f func(x float64) float64, a, b float64, samples uint) []kairos.Pair {
+	s.handleInput()
+	if samples < 2 {
+		samples = 2
+	}
+
+	y := 0.0
+	out := make([]kairos.Pair, samples)
+	sampleH := (b - a) / float64(samples-1)
+	for i := 0; i < int(samples); i++ {
+		x := a + float64(i)*sampleH
+		y = s.DefiniteIntegral(f, 0, x)
+		out[i] = kairos.Pair{X: x, Y: y}
+	}
+	return out
 }
 
 func (s *Simpson_3_8) handleInput() {
