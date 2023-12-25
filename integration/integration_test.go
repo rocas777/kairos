@@ -1,7 +1,6 @@
 package integration_test
 
 import (
-	"fmt"
 	"github.com/rocas777/kairos/integration"
 	"math"
 	"testing"
@@ -96,10 +95,6 @@ func TestSimpson_1_3(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			check(integration.NewSimpson_1_3(10).DefiniteIntegral(test.f, test.a, test.b), test.sol(), t)
 		})
-	}
-
-	for _, v := range integration.NewSimpson_1_3(10).AntiDerivative(smooth, -10, 10, 200) {
-		fmt.Printf("%f %f\n", v.X, v.Y)
 	}
 }
 

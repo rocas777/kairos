@@ -82,7 +82,7 @@ func TestFalsePosition(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			check(test.f(equation.NewFalsePosition(0.001, 100).Result(test.f, test.a, test.b)), t)
+			check(test.f(equation.NewFalsePosition(0.001, 100).Zero(test.f, test.a, test.b)), t)
 		})
 	}
 }
@@ -102,7 +102,7 @@ func TestSecant(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			check(test.f(equation.NewSecant(0.001, 100).Result(test.f, test.a, test.b)), t)
+			check(test.f(equation.NewSecant(0.001, 100).Zero(test.f, test.a, test.b)), t)
 		})
 	}
 }
@@ -121,7 +121,7 @@ func TestNewton(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			check(test.f(equation.NewNewtonRaphson(0.001, 100).Result(test.f, test.dxF, test.a)), t)
+			check(test.f(equation.NewNewtonRaphson(0.001, 100).Zero(test.f, test.dxF, test.a)), t)
 		})
 	}
 }
