@@ -1,3 +1,4 @@
+![Automation Badge](https://github.com/rocas777/kairos/actions/workflows/go.yml/badge.svg)
 
 # Kairos - numerical calculus
 
@@ -24,6 +25,25 @@ The Kairos project is a versatile library developed in [Go](https://go.dev/) tha
     3. [Higher Order Derivative](#higher-order-derivative)
         1. [Local Derivative](#local-derivative-2)
         2. [Range Derivative](#range-derivative-2)
+3. [Kairos: Equation Solver Package](#kairos-equation-solver-package)
+    1. [Bisection](#bisection)
+    2. [False Position (Regula False)](#falseposition)
+    3. [NewtonRaphson](#newtonraphson)
+    4. [Secant](#secant)
+4. [Kairos: Integration Package](#kairos-integration-package-)
+    1. [Trapezoidal Rule](#trapezoid-rule)
+        1. [Definite Integral](#definite-integral)
+        2. [Anti-Derivative](#anti-derivative)
+    2. [Simpson's 1/3 Rule](#simpson-13-rule)
+        1. [Definite Integral](#definite-integral-1)
+        2. [Anti-Derivative](#anti-derivative-1)
+    3. [Simpson's 3/8 Rule](#simpson-38-rule)
+        1. [Definite Integral](#definite-integral-2)
+        2. [Anti-Derivative](#anti-derivative-2)
+    4. [Adaptative Simpson Rule](#adaptive-simpson-integration)
+        1. [Definite Integral](#definite-integral-3)
+        2. [Anti-Derivative](#anti-derivative-3)
+5.  [Documentation Reference](#documentation-reference)
 
 
 ## Getting started
@@ -410,3 +430,326 @@ func main() {
 }
 
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Kairos: Integration Package 
+
+The `integration` package in the Kairos library provides utilities for numerical integration of functions. It includes several methods for calculating definite integrals, such as the Trapezoidal Rule, Simpson's 1/3 Rule, Simpson's 3/8 Rule, and adaptive Simpson integration. Users can choose the appropriate method based on the precision and efficiency requirements of their mathematical analysis.
+
+## Overview
+
+- [Trapezoid rule](#trapezoid-rule)
+- [Simpson 1/3 Rule](#simpson-13-rule)
+- [Simpson 3/8 Rule](#falseposition)
+- [Simpson 1/3 adaptative](#newtonraphson)
+
+
+
+## Trapezoid Rule
+
+The `Trapezoid` struct provides a method to calculate the definite integral of a given function using the [Trapezoidal](https://en.wikipedia.org/wiki/Trapezoidal_rule) Rule. This rule approximates the integral by dividing the interval into N trapezoids and summing their areas. The higher the value of N, the more accurate the integration will be; however, this will lead to a more time-expensive method.
+### Definite Integral
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/rocas777/kairos/integration"
+)
+
+func main() {
+	// Example function: f(x) = x^2
+	f := func(x float64) float64 {
+		return x * x
+	}
+
+	// Create a new Trapezoid instance with default N (10)
+	trapezoid := integration.NewTrapezoid(10)
+
+	// Calculate the definite integral of the function over the interval [0, 1]
+	result := trapezoid.DefiniteIntegral(f, 0, 1)
+	fmt.Println("Definite Integral:", result)
+}
+```
+
+### Anti-derivative
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/rocas777/kairos/integration"
+)
+
+func main() {
+	// Example function: f(x) = x^2
+	f := func(x float64) float64 {
+		return x * x
+	}
+
+	// Create a new Trapezoid instance with default N (10)
+	trapezoid := integration.NewTrapezoid(10)
+
+	// Calculate the approximate antiderivative of the function over the interval [0, 1] with 5 samples
+	result := trapezoid.AntiDerivative(f, 0, 1, 5)
+	fmt.Println("Approximate Anti-Derivative:", result)
+}
+```
+
+
+
+
+
+
+## Simpson 1/3 Rule
+
+The `Simpson_1_3` struct provides a method to calculate the definite integral of a given function using the [Simpson](https://en.wikipedia.org/wiki/Simpson%27s_rule#Composite_Simpson's_1/3_rule) algorithm, specifically the 1/3 composite rule. This works by dividing the interval into N pieces and making a polynomial interpolation between two successive points to calculate the area below the interpolation. The higher the value of N, the more accurate the integration will be; however, this will lead to a more time-expensive method.
+
+### Definite Integral
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/rocas777/kairos/integration"
+)
+
+func main() {
+	// Example function: f(x) = x^2
+	f := func(x float64) float64 {
+		return x * x
+	}
+
+	// Create a new Simpson_1_3 instance with default N (2)
+	simpson13 := integration.NewSimpson_1_3(2)
+
+	// Calculate the definite integral of the function over the interval [0, 1]
+	result := simpson13.DefiniteIntegral(f, 0, 1)
+	fmt.Println("Definite Integral:", result)
+}
+```
+
+### Anti-derivative
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/rocas777/kairos/integration"
+)
+
+func main() {
+	// Example function: f(x) = x^2
+	f := func(x float64) float64 {
+		return x * x
+	}
+
+	// Create a new Simpson_1_3 instance with default N (2)
+	simpson13 := integration.NewSimpson_1_3(2)
+
+	// Calculate the approximate antiderivative of the function over the interval [0, 1] with 5 samples
+	result := simpson13.AntiDerivative(f, 0, 1, 5)
+	fmt.Println("Approximate Anti-Derivative:", result)
+}
+```
+
+
+## Simpson 3/8 Rule
+
+The `Simpson_3_8` struct provides a method to calculate the definite integral of a given function using the [Simpson algorithm](https://en.wikipedia.org/wiki/Simpson%27s_rule#Composite_Simpson's_3/8_rule), specifically the 3/8 composite rule. This works by dividing the interval into N pieces and making a polynomial interpolation using three successive points to calculate the area below the interpolation. The higher the value of N, the more accurate the integration will be; however, this will lead to a more time-expensive method.
+
+### Definite Integral
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/rocas777/kairos/integration"
+)
+
+func main() {
+	// Example function: f(x) = x^2
+	f := func(x float64) float64 {
+		return x * x
+	}
+
+	// Create a new Simpson_3_8 instance with default N (3)
+	simpson38 := integration.NewSimpson_3_8(3)
+
+	// Calculate the definite integral of the function over the interval [0, 1]
+	result := simpson38.DefiniteIntegral(f, 0, 1)
+	fmt.Println("Definite Integral:", result)
+}
+```
+
+### Anti-derivative
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/rocas777/kairos/integration"
+)
+
+func main() {
+	// Example function: f(x) = x^2
+	f := func(x float64) float64 {
+		return x * x
+	}
+
+	// Create a new Simpson_3_8 instance with default N (3)
+	simpson38 := integration.NewSimpson_3_8(3)
+
+	// Calculate the approximate antiderivative of the function over the interval [0, 1] with 5 samples
+	result := simpson38.AntiDerivative(f, 0, 1, 5)
+	fmt.Println("Approximate Anti-Derivative:", result)
+}
+```
+
+
+
+
+
+## Adaptive Simpson Integration
+
+The `SimpsonAdaptive` struct provides a method to calculate the definite integral of a given function using adaptive Simpson integration. It combines the simplicity of the [Simpson 1/3 Rule](https://en.wikipedia.org/wiki/Simpson%27s_rule#Composite_Simpson's_1/3_rule) with adaptivity to improve accuracy. The algorithm automatically adjusts the number of intervals based on the function's behavior, comparing the results by dividing intervals into more subintervals using the epsilon criterion.
+### Definite Integral
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/rocas777/kairos/integration"
+)
+
+func main() {
+	// Example function: f(x) = x^2
+	f := func(x float64) float64 {
+		return x * x
+	}
+
+	// Create a new SimpsonAdaptive instance with default Epsilon (0.1)
+	simpsonAdaptive := integration.NewSimpsonAdaptive(0.1)
+
+	// Calculate the definite integral of the function over the interval [0, 1]
+	result := simpsonAdaptive.DefiniteIntegral(f, 0, 1)
+	fmt.Println("Definite Integral:", result)
+}
+```
+
+### Anti-derivative
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/rocas777/kairos/integration"
+)
+
+func main() {
+	// Example function: f(x) = x^2
+	f := func(x float64) float64 {
+		return x * x
+	}
+
+	// Create a new SimpsonAdaptive instance with default Epsilon (0.1)
+	simpsonAdaptive := integration.NewSimpsonAdaptive(0.1)
+
+	// Calculate the approximate antiderivative of the function over the interval [0, 1] with 5 samples
+	result := simpsonAdaptive.AntiDerivative(f, 0, 1, 5)
+	fmt.Println("Approximate Anti-Derivative:", result)
+}
+```
+
+# Documentation Reference
+
+For detailed documentation and examples, please refer to the official documentation on [pkg.go.dev](https://pkg.go.dev/github.com/rocas777/kairos).
+
+
